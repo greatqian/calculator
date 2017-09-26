@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>calculator</title>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<style type="text/css">
+#container {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    background-color: skyblue;
+    /*transform: translateX(-250px) translateY(-250px);*/
+    margin-top: -250px;
+    margin-left: -250px;
+}
+
+.nums {
+    display: inline-block;
+    /*padding: 15px 15px 0px 15px;*/
+    width: 330px;
+}
+
+.number {
+    display: inline-block;
+    background-color: green;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 5px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 30px;
+    box-shadow: 0px 3px 3px 0px;
+    /*transition: all 0.05s;*/
+}
+
+.monitor-container {
+    width: 100%;
+    padding: 25px 20px 10px 20px;
+}
+
+#monitor {
+    width: 90%;
+    height: 60px;
+    line-height: 60px;
+    font-size: 40px;
+}
+
+.symbols {
+    display: inline-block;
+    width: 130px;
+    /*background-color: gold;*/
+    /*margin-top: -10px;*/
+}
+
+.symbol {
+    display: inline-block;
+    width: 120px;
+    height: 100px;
+    margin-bottom: 5px;
+    background-color: gold;
+    line-height: 100px;
+    font-size: 30px;
+    text-align: center;
+    box-shadow: 0px 2px 2px 0px;
+}
+
+.buttons-container {
+    width: 100%;
+    padding: 20px 20px;
+    margin-top: 20px;
+}
+
+#clear {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    background-color: yellow;
+    position: absolute;
+    left: 390px;
+    top: 100px;
+    text-align: center;
+    line-height: 30px;
+    box-shadow: 0px 2px 2px 0px;
+    border-radius: 8px;
+}
+</style>
+
+<body>
+    <div id="container">
+        <div class="monitor-container">
+            <input type="text" name="" id="monitor">
+        </div>
+        <a id="clear">C</a>
+        <div class="buttons-container">
+            <div class="nums">
+                <a class="number">1</a>
+                <a class="number">2</a>
+                <a class="number">3</a>
+                <a class="number">4</a>
+                <a class="number">5</a>
+                <a class="number">6</a>
+                <a class="number">7</a>
+                <a class="number">8</a>
+                <a class="number">9</a>
+            </div>
+            <div class="symbols">
+                <a class="symbol" id="add">+</a>
+                <a class="symbol" id="subtraction">-</a>
+                <a class="symbol" id="result">=</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+$(function() {
+    var num1, num2;
+    var symbol = null;
+    var isCalculateFinished = false;
+
+    $(".nums a").click(function() {
+        var that = this;
+        if (isCalculateFinished) {
+        	$("#monitor").val("");
+        	isCalculateFinished = false;
+        }
+        $("#monitor").val($("#monitor").val() + $(this).text());
+    })
+    $(".symbols a:lt(2)").click(function() {
+        num1 = parseInt($("#monitor").val());
+        symbol = $(this).text();
+        $("#monitor").val("");
+    })
+    $("#result").click(function() {
+        if (isNaN(num1) || symbol === null) {
+        	num1 = parseInt($("#monitor").val());
+        } else {
+        	num2 = parseInt($("#monitor").val());
+        }
+
+        if (!isNaN(num1) && symbol == null) {
+        	$("#monitor").val(num1);
+        	return;
+        }
+
+        if (symbol == "+") {
+            result = num1 + num2;
+        } else {
+            result = num1 - num2;
+        }
+
+        if (isNaN(result)) {
+            $("#monitor").val("error");
+            isCalculateFinished = true;
+            clearParam();
+        } else {
+            $("#monitor").val(result);
+            isCalculateFinished = true;
+            clearParam();
+        }
+
+    })
+
+
+    $(".nums a").mousedown(function() {
+        $(this).css("box-shadow", "0px 1px 1px 0px");
+    })
+
+    $(".nums a").mouseup(function() {
+        $(this).css("box-shadow", "0px 3px 3px 0px");
+    })
+
+    $(".symbols a, #clear").mousedown(function() {
+    	$(this).css("box-shadow", "0px 1px 1px 0px");
+    })
+
+    $(".symbols a, #clear").mouseup(function() {
+    	$(this).css("box-shadow", "0px 2px 2px 0px");
+    })
+
+
+    $("#clear").click(function() {
+        clearParam();
+        $("#monitor").val("");
+    })
+
+    function clearParam() {
+    	num1 = null;
+        num2 = null;
+        symbol = null;
+    }
+
+})
+</script>
+
+</html>
